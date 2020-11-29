@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  display: flex;
+  justify-content: center;
+}
+html body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1rem;
+  max-width: 700px;
+  min-height: 100vh;
+  max-height: 100vh;
+  box-sizing: border-box;
+}
+html body main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+html body main tr td:nth-child(3) {
+  display: flex;
+  justify-content: center;
+}
+html body main tr td:nth-child(3) img {
+  height: 50px;
+}
+
+/*# sourceMappingURL=teams.css.map */

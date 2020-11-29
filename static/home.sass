@@ -1,0 +1,129 @@
+*
+  margin: 0
+  padding: 0
+
+html
+  display: flex
+  justify-content: center
+  body
+    display: flex
+    flex-direction: column
+    flex-grow: 1
+    padding: 1rem
+    max-width: 700px
+    min-height: 100vh
+    max-height: 100vh
+    box-sizing: border-box
+    main
+      display: flex
+      flex-direction: column
+
+      nav
+        display: flex
+        ul
+          list-style: none
+          display: flex
+          margin-left: 5px
+          margin-right: 1rem
+          li
+            margin-left: 3px
+            a
+              display: inline-block
+              width: 15px
+              text-align: center
+              text-decoration: none
+              border-radius: 3px
+              border: 1px solid #00000000
+              &.selected
+                border: 1px solid #AAAAAA
+        button
+          margin: 0 5px
+
+      details
+        margin-top: 0.5rem
+        summary
+          display: flex
+          background-color: #AAAAAA
+          margin-bottom: 0.5rem
+          > *
+            margin-left: 1rem
+        > div
+          .top
+            display: flex
+
+      details#slot
+        > div
+          display: flex
+          justify-content: center
+          flex-wrap: wrap
+          div.list
+            display: flex
+            flex-direction: column
+            align-items: center
+            margin: 2px
+            border: 1px solid #00000030
+            border-radius: 4px
+            cursor: pointer
+            div.img
+              height: 50px
+              width: 70px
+              display: flex
+              justify-content: center
+              img
+                height: 100%
+
+      details#score
+        > div
+          td input
+            width: 2rem
+            text-align: end
+          //tr
+          //  display: flex
+          //  td:not(:first-child)
+          //    flex-grow: 1
+
+    > aside
+      &.shown
+        display: flex
+      display: none
+      justify-content: center
+      align-items: center
+      position: fixed
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      background-color: #AAAAAAA0
+      > .container
+        display: flex
+        padding: 1rem
+        background-color: #555
+        > .col
+          display: flex
+          flex-direction: column
+          justify-content: space-between
+          margin-right: 0.5rem
+        img
+          border: 1px solid #000
+      > button
+        border-radius: 50%
+        height: 2rem
+        width: 2rem
+        border: none
+        margin-left: 0.5rem
+        outline: none
+        cursor: pointer
+
+
+    > aside#add_week
+      > .container
+        flex-direction: column
+        .row
+          display: flex
+          justify-content: center
+          .list
+            margin: 0.3rem  0.5rem 0.3rem
+          &.body
+            flex-direction: column
+            max-height: 80vh
+            overflow-y: scroll

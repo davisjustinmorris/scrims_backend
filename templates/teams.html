@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Manage</title>
+    <script src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='teams.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='teams.css') }}">
+</head>
+<body>
+    <main>
+        <table>
+            <tr>
+                <th>Index</th>
+                <th>Team Name</th>
+                <th>Team Icon</th>
+                <th>Actions</th>
+            </tr>
+            {% for entry in payload %}
+            <tr>
+                <td>{{ entry[0] }}</td>
+                <td>{{ entry[1] }}</td>
+                <td><img src="static{{ entry[2] }}" alt=""></td>
+                <td>
+                    <button>Edit</button>
+                    <button>Safe Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+
+    <aside>
+
+    </aside>
+</body>
+</html>

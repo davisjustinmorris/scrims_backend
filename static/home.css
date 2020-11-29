@@ -1,0 +1,144 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  display: flex;
+  justify-content: center;
+}
+html body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1rem;
+  max-width: 700px;
+  min-height: 100vh;
+  max-height: 100vh;
+  box-sizing: border-box;
+}
+html body main {
+  display: flex;
+  flex-direction: column;
+}
+html body main nav {
+  display: flex;
+}
+html body main nav ul {
+  list-style: none;
+  display: flex;
+  margin-left: 5px;
+  margin-right: 1rem;
+}
+html body main nav ul li {
+  margin-left: 3px;
+}
+html body main nav ul li a {
+  display: inline-block;
+  width: 15px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 3px;
+  border: 1px solid #00000000;
+}
+html body main nav ul li a.selected {
+  border: 1px solid #AAAAAA;
+}
+html body main nav button {
+  margin: 0 5px;
+}
+html body main details {
+  margin-top: 0.5rem;
+}
+html body main details summary {
+  display: flex;
+  background-color: #AAAAAA;
+  margin-bottom: 0.5rem;
+}
+html body main details summary > * {
+  margin-left: 1rem;
+}
+html body main details > div .top {
+  display: flex;
+}
+html body main details#slot > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+html body main details#slot > div div.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2px;
+  border: 1px solid #00000030;
+  border-radius: 4px;
+  cursor: pointer;
+}
+html body main details#slot > div div.list div.img {
+  height: 50px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+}
+html body main details#slot > div div.list div.img img {
+  height: 100%;
+}
+html body main details#score > div td input {
+  width: 2rem;
+  text-align: end;
+}
+html body > aside {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #AAAAAAA0;
+}
+html body > aside.shown {
+  display: flex;
+}
+html body > aside > .container {
+  display: flex;
+  padding: 1rem;
+  background-color: #555;
+}
+html body > aside > .container > .col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 0.5rem;
+}
+html body > aside > .container img {
+  border: 1px solid #000;
+}
+html body > aside > button {
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+  border: none;
+  margin-left: 0.5rem;
+  outline: none;
+  cursor: pointer;
+}
+html body > aside#add_week > .container {
+  flex-direction: column;
+}
+html body > aside#add_week > .container .row {
+  display: flex;
+  justify-content: center;
+}
+html body > aside#add_week > .container .row .list {
+  margin: 0.3rem 0.5rem 0.3rem;
+}
+html body > aside#add_week > .container .row.body {
+  flex-direction: column;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+/*# sourceMappingURL=home.css.map */

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='home.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <main>
+        <nav>
+            <span>Week: </span>
+            <ul>
+            {% for i in range(1, (payload.max_week + 1)) %}
+                {% if i == payload.sel_week %}
+                    <li><a href="/week/{{ i }}" class="selected">{{ i }}</a></li>
+                {% else %}
+                    <li><a href="/week/{{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            <button name="add_week">Add Week with Slots</button>
+            <a href="/week/{{ payload.sel_week }}"><button>Reload Page</button></a>
+        </nav>
+
+        <details id="slot">
+            <summary>Slot List <button name="add">Add Slot</button><span><i>Click on a slot to edit/remove</i></span></summary>
+            <div>
+            {% for slot in payload.slots %}
+                <div class="list" id="{{ slot[3] }}">
+                    <div class="img"><img src="/static{{ slot[2] }}" alt="Logo of {{ slot[1] }}"></div>
+                    <div>
+                        <span>{{ slot[0] }}</span>
+                        <span>{{ slot[1] }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </details>
+
+        <details id="score">
+            <summary>Scores <button>Update</button></summary>
+            <div>
+                <div class="body">
+                    <table>
+                        <tr>
+                            <th>Team</th>
+                            <th>Day 1</th>
+                            <th>Day 2</th>
+                            <th>Day 3</th>
+                            <th>Day 4</th>
+                            <th>Day 5</th>
+                            <th>Day 6</th>
+                            <th>Kills</th>
+                            <th>Overall</th>
+                        </tr>
+                        {% for score in payload.scores %}
+                        <tr>
+                            {% for field in score %}
+                                {% if loop.index == 1 %}
+                                    <td><span>{{ field }}</span></td>
+                                {% else %}
+                                    {% if field is not none %}
+                                        <td><input type="text" name="" placeholder="-" maxlength="11" value="{{ field }}"></td>
+                                    {% else %}
+                                        <td><input type="text" name="" placeholder="-" maxlength="11"></td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </details>
+    </main>
+
+    <aside id="edit_slot">
+        <div class="container">
+            <div class="col">
+                <label>
+                    <span>Slot #</span> <input type="text" size="2" placeholder="Num">
+                </label>
+                <label>
+                    <span>Team:</span> <select><option disabled selected>--Loading--</option></select>
+                </label>
+                <button name="delete">Delete</button>
+                <button name="update ">Update</button>
+                <button name="add" style="display: none;">Add</button>
+            </div>
+        </div>
+        <button>X</button>
+    </aside>
+
+    <aside id="add_week">
+        <div class="container">
+            <div class="row header">
+                <label>
+                    <span>Week #</span>
+                    <input type="text" size="2" placeholder="Num">
+                </label>
+            </div>
+            <div class="row body">
+            </div>
+            <div class="row controls">
+                <button name="add">Add row</button>
+                <button name="submit">Submit</button>
+            </div>
+        </div>
+        <button>X</button>
+    </aside>
+
+    <script>
+        let teams = {{ payload.teams|safe }};
+    </script>
+</body>
+</html>
