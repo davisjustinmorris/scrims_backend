@@ -26,18 +26,18 @@ $(document).ready(function () {
     });
 
     // button[add_slot] click listener
-     $(`#slot summary button`).on('click', function () {
-         let sel = $('#edit_slot .container select');
-         sel.empty();
-         sel.append(`<option selected hidden disabled>--Choose--</option>`);
-         teams.forEach(details => sel.append(`<option value="${details[0]}">${details[1]}</option>`));
+    $(`#slot summary button`).on('click', function () {
+        let sel = $('#edit_slot .container select');
+        sel.empty();
+        sel.append(`<option selected hidden disabled>--Choose--</option>`);
+        teams.forEach(details => sel.append(`<option value="${details[0]}">${details[1]}</option>`));
 
-         $('#edit_slot .container img').remove();
-         $('#edit_slot .container input').val("");
-         $('#edit_slot .container button:last-child').show();
-         $('#edit_slot .container button:not(:last-child)').hide();
-         $('#edit_slot').addClass('shown');
-     });
+        $('#edit_slot .container img').remove();
+        $('#edit_slot .container input').val("");
+        $('#edit_slot .container button:last-child').show();
+        $('#edit_slot .container button:not(:last-child)').hide();
+        $('#edit_slot').addClass('shown');
+});
 
     function populate_team_list() {
         let tg =
@@ -50,7 +50,6 @@ $(document).ready(function () {
         tg +=`
             </select>
         </div>`;
-
         return tg;
     }
 
@@ -65,5 +64,47 @@ $(document).ready(function () {
         let sel = populate_team_list(null);
         console.log("new add slot invoked; sel: ", sel);
         $('#add_week .body').append(populate_team_list());
+    });
+
+    // button[update_scores] listener
+    $(`#score summary button[name="update_scores"]`).on('click', function () {
+        // get selected checkboxes
+        let tg_lis = [];
+        $(`input[name="select_update"]:checked`).each((a, b) => tg_lis.push(b.value));
+
+        // if none sel; alert
+        if (tg_lis.length === 0) { alert("no columns selected for update"); return ; }
+
+        // convert target column:nth-child inp-value to list
+        let upload_dict = {}, upload_cols, key;
+        tg_lis.forEach(function (val) {
+            // prep list
+            upload_cols = [];
+            $(`#score table tr:not(:first-child, :last-child) td:nth-child(${parseInt(val) + 1}) input`).each(function (i, score) {
+                if (score.value !== "") upload_cols.push(score.value);
+                else                    upload_cols.push(null);
+            });
+
+            // make dict
+            switch (val){
+                case "1": key = "day1"; break;
+                case "2": key = "day2"; break;
+                case "3": key = "day3"; break;
+                case "4": key = "day4"; break;
+                case "5": key = "day5"; break;
+                case "6": key = "day6"; break;
+                case "7": key = "kills"; break;
+                case "8": key = "total";
+            }
+            upload_dict[key] = upload_cols;
+        });
+
+        console.log(upload_dict);
+
+
+
+        // ajax push
+
+        // if success; reload! | else; alert!
     });
 });

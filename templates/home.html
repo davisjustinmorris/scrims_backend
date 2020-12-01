@@ -40,7 +40,7 @@
         </details>
 
         <details id="score">
-            <summary>Scores <button>Update</button></summary>
+            <summary>Scores <button name="update_scores">Update</button></summary>
             <div>
                 <div class="body">
                     <table>
@@ -70,6 +70,17 @@
                             {% endfor %}
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <td><span><strong>Update ?</strong></span></td>
+                            <td><input type="checkbox" name="select_update" value="1"></td>
+                            <td><input type="checkbox" name="select_update" value="2"></td>
+                            <td><input type="checkbox" name="select_update" value="3"></td>
+                            <td><input type="checkbox" name="select_update" value="4"></td>
+                            <td><input type="checkbox" name="select_update" value="5"></td>
+                            <td><input type="checkbox" name="select_update" value="6"></td>
+                            <td><input type="checkbox" name="select_update" value="7"></td>
+                            <td><input type="checkbox" name="select_update" value="8"></td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -100,11 +111,11 @@
                     <span>Week #</span>
                     <input type="text" size="2" placeholder="Num">
                 </label>
+                <button name="add">Add row</button>
             </div>
             <div class="row body">
             </div>
             <div class="row controls">
-                <button name="add">Add row</button>
                 <button name="submit">Submit</button>
             </div>
         </div>

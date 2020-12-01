@@ -140,5 +140,8 @@ html body > aside#add_week > .container .row.body {
   max-height: 80vh;
   overflow-y: scroll;
 }
+html body > aside#add_week > .container .row.header button {
+  margin-left: 10px;
+}
 
 /*# sourceMappingURL=home.css.map */
