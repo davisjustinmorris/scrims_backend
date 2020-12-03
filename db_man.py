@@ -75,7 +75,7 @@ class Manage:
     @staticmethod
     def get_teams(ind=None):
         q = """
-        SELECT tm_pk_id, tm_name, tm_dp_path
+        SELECT tm_pk_id, tm_name, tm_dp_path, 
         FROM tb_team
         ORDER BY tm_name"""
         q_sel = " WHERE tm_pk_id = ?"
@@ -87,5 +87,22 @@ class Manage:
 
     class Modify:
         q_scores_update = '''
-        
         '''
+        q_scores_delete = 'DELETE FROM tb_slots WHERE sl_week_num = ? AND sl_slot_num = ? AND sl_fk_tm_pk_id = ?'
+        q_scores_add = """INSERT INTO tb_slots ()"""
+
+        @classmethod
+        def test_endpoint(cls, task, data):
+            print("task: " + str(task))
+            print("data: " + str(data))
+
+            if task == "modify_slots":
+                if data.get("action") == "delete":
+                    week = data.get("data").get("week")
+                    slot = data.get("data").get("slot")
+                    team_id = data.get("data").get("team_id")
+                    print("slot: {} & team_id: {} & week: {}".format(slot, team_id, week))
+                    _db_write(cls.q_scores_delete, (week, slot, team_id))
+                    return True
+
+            return "OK"

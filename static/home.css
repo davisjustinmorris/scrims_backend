@@ -58,12 +58,11 @@ html body main details summary {
 html body main details summary > * {
   margin-left: 1rem;
 }
-html body main details > div .top {
-  display: flex;
-}
-html body main details#slot > div {
+html body main details > div {
   display: flex;
   justify-content: center;
+}
+html body main details#slot > div {
   flex-wrap: wrap;
 }
 html body main details#slot > div div.list {
