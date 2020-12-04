@@ -39,7 +39,7 @@ def ajax_handle(task=None):
         print(request.get_json())                                           #
     else:
         print("onto calling handler for task: ", task)
-        return db.Manage.Modify.test_endpoint(task, request.get_json())     # call Handler
+        return db.Manage.task_endpoint(task, request.get_json())            # call Handler
 
     return "say what!?"
 

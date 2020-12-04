@@ -50,24 +50,22 @@ $(document).ready(function () {
         $('aside#edit_slot .container img').remove();
         $('aside#edit_slot .container').append($(this).find('img').clone());
         $('aside#edit_slot .container input').val($(this).find('span:first-child').html());
-        $("#edit_slot .container button:last-child").hide();
-        $("#edit_slot .container button:not(:last-child)").show();
+        $("#edit_slot .container button[name='add']").hide();
+        $("#edit_slot .container button[name='delete']").show();
 
         let sel = $('aside#edit_slot .container select');
         let team_id = this.id;
         sel.empty();
         teams.forEach(function (details) {
-            if (team_id === details[0])
-                sel.append(`<option value="${details[0]}" selected>${details[1]}</option>`);
-            else
-                sel.append(`<option value="${details[0]}">${details[1]}</option>`);
+            if (team_id === details[0]) sel.append(`<option value="${details[0]}" selected>${details[1]}</option>`);
+            else                        sel.append(`<option value="${details[0]}">${details[1]}</option>`);
         });
 
         $('aside#edit_slot').addClass('shown');
     });
 
     // #slot button[add_slot] click listener
-    $(`#slot summary button`).on('click', function () {
+    $(`#slot summary button[name='add']`).on('click', function () {
         let sel = $('#edit_slot .container select');
         sel.empty();
         sel.append(`<option selected hidden disabled>--Choose--</option>`);
@@ -75,10 +73,10 @@ $(document).ready(function () {
 
         $('#edit_slot .container img').remove();
         $('#edit_slot .container input').val("");
-        $('#edit_slot .container button:last-child').show();
-        $('#edit_slot .container button:not(:last-child)').hide();
+        $("#edit_slot .container button[name='add']").show();
+        $("#edit_slot .container button[name='delete']").hide();
         $('#edit_slot').addClass('shown');
-});
+    });
 
 
 // UPDATE SCORES
@@ -118,6 +116,7 @@ $(document).ready(function () {
             }
             upload_dict[key] = upload_cols;
         });
+        upload_dict["week"] = $(`nav ul a.selected`).text();
 
         // data validation promp
         if (flag_invalid_spotted)
@@ -130,7 +129,7 @@ $(document).ready(function () {
 
 
 // EDIT SLOT
-    // add | update | delete
+    // add | delete
     $(`#edit_slot .container button`).on('click', function () {
         let slot = $(`#edit_slot input`).val();
         let team_id = $(`#edit_slot select`).val();
@@ -150,17 +149,14 @@ $(document).ready(function () {
 
 
 // ADD WEEK WITH SLOTS
-     // nav button[add_week] click listener
+    // nav button[add_week] click listener
     $('nav button[name="add_week"]').on('click', function () {
         $(`#add_week .body`).append(populate_team_list());
-        console.log(populate_team_list());
         $('aside#add_week').addClass('shown');
     });
 
     // #add_week button[add_slot] click listener
     $('#add_week .container button[name="add"]').on('click', function () {
-        let sel = populate_team_list(null);
-        console.log("new add slot invoked; sel: ", sel);
         $('#add_week .body').append(populate_team_list());
     });
 
@@ -198,5 +194,5 @@ $(document).ready(function () {
             format: ["slot_num", "team_id"],
             data: { slot_team_list: slot_list }
         });
-    })
+    });
 });
