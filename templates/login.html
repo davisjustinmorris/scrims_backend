@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form class="container" method="post" action="login">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Login</button>
+        {% if msg is defined and msg is not none %}
+        <span class="info">{{ msg }}</span>
+        {% endif %}
+    </form>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            max-height: 100vh;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 3px;
+            border: 1px solid #777;
+        }
+        form span {
+            font-size: 0.9rem;
+            color: #AA3333;
+            margin-top: 10px;
+        }
+        button { cursor: pointer }
+        form > button, input[type="password"] { margin-top: 5px}
+    </style>
+</body>
+</html>

@@ -1,30 +1,6 @@
-import sqlite3
-from multiprocessing import Lock
+from CommonCode import AuthTools, DbTools
 
-
-DB_Name = 'db.sqlite'
-db = sqlite3.connect(DB_Name, check_same_thread=False)
-cur = db.cursor()
-lock = Lock()
-
-
-def _db_write(q, val, do_commit=True):
-    lock.acquire(True)
-    last_row_id = cur.execute(q, val).lastrowid
-    if do_commit:
-        db.commit()
-    lock.release()
-    return last_row_id
-
-
-def _db_read(q, val=(), f_all=True):
-    lock.acquire(True)
-    if f_all:
-        res = cur.execute(q).fetchall() if val == () else cur.execute(q, val).fetchall()
-    else:
-        res = cur.execute(q).fetchone() if val == () else cur.execute(q, val).fetchone()
-    lock.release()
-    return res
+db = DbTools()
 
 
 def process_week(week=None):
@@ -32,7 +8,7 @@ def process_week(week=None):
         if not isinstance(week, int):
             week = None
 
-    return _db_read("SELECT max(sl_week_num) FROM tb_slots", f_all=False)[0] if week is None else week
+    return db.read("SELECT max(sl_week_num) FROM tb_slots", f_all=False)[0] if week is None else week
 
 
 def get_scores_data(week, do_order=True):
@@ -46,7 +22,7 @@ WHERE sl_week_num = ? """
 sl_day_6 DESC, sl_day_5 DESC, sl_day_4 DESC, sl_day_3 DESC, sl_day_2 DESC, sl_day_1 DESC"""
 
     week = process_week(week)
-    return {week: {"scores": _db_read(q_scores, (week,))}}
+    return {week: {"scores": db.read(q_scores, (week,))}}
 
 
 def get_slots_data(week):
@@ -58,7 +34,7 @@ WHERE sl_week_num = ?
 ORDER BY sl_slot_num"""
 
     week = process_week(week)
-    return {week: {"slots": _db_read(q_slots, (week,))}}
+    return {week: {"slots": db.read(q_slots, (week,))}}
 
 
 class Manage:
@@ -84,7 +60,7 @@ class Manage:
         if ind is not None:
             q += q_sel
 
-        return _db_read(q, (ind,) if ind else ())
+        return db.read(q, (ind,) if ind else ())
 
     @staticmethod
     def task_endpoint(task, data):
@@ -101,7 +77,7 @@ class Manage:
 
             print("task: " + action)
             print("data: " + str(data.get('data')))
-            _db_write(query, (
+            db.write(query, (
                 data.get("data").get("week"),
                 data.get("data").get("slot"),
                 data.get("data").get("team_id")
@@ -112,7 +88,7 @@ class Manage:
             q_update_scores_pt1 = '''UPDATE tb_slots SET'''
             q_update_scores_pt2 = ''' WHERE sl_fk_tm_pk_id = ? AND sl_week_num = ?'''
 
-            t_id_set = _db_read(q_get_team_ids, (data['week'],))
+            t_id_set = db.read(q_get_team_ids, (data['week'],))
             t_id_set = [tup + (data['week'],) for tup in t_id_set]
 
             for key in data.keys():
@@ -145,12 +121,37 @@ class Manage:
             print(t_id_set)
             print(q_update_scores_pt1)
 
-            lock.acquire(True)
-            cur.executemany(q_update_scores_pt1, t_id_set)
-            db.commit()
-            lock.release()
+            db.lock.acquire(True)
+            db.cur.executemany(q_update_scores_pt1, t_id_set)
+            db.db.commit()
+            db.lock.release()
 
         elif task == "add_week":
             pass
 
         return "OK"
+
+
+class Auth:
+    @staticmethod
+    def do_login(username, password):
+        q_fetch_hash = '''SELECT lg_pw_hash, lg_pk_id FROM tb_login WHERE lg_username = ?'''
+        q_put_token = '''UPDATE tb_login SET lg_token = ? WHERE lg_pk_id = ?'''
+        res = db.read(q_fetch_hash, (username,), f_all=False)
+        if res is None:
+            return None         # no such username
+
+        pw_hash, user_num = res
+        print("h: {}, n: {}".format(pw_hash, user_num))
+        if AuthTools.password_hash_verify(password, pw_hash):
+            token = AuthTools.make_token()
+            print("token: " + token)
+            db.write(q_put_token, (token, user_num))
+            return token, user_num
+
+        return False            # for wrong password
+
+    @staticmethod
+    def check_token(user_num, token):
+        q_check_token = '''SELECT COUNT(*) FROM tb_login WHERE lg_pk_id = ? AND lg_token = ?'''
+        return db.read(q_check_token, (user_num, token), f_all=False)[0] == 1

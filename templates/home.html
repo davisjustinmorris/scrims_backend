@@ -20,16 +20,18 @@
                 {% endif %}
             {% endfor %}
             </ul>
-            <button name="add_week">Add Week with Slots</button>
+            <button name="add_week" disabled>Add Week with Slots</button>
+            <button name="add_team" disabled>Add/Edit Team</button>
             <a href="/week/{{ payload.sel_week }}"><button>Reload Page</button></a>
+            <a href="/logout"><button>Logout</button></a>
         </nav>
 
-        <details id="slot">
+        <details id="slot" open>
             <summary>Slot List <button name="add">Add Slot</button><span><i>Click on a slot to edit/remove</i></span></summary>
             <div>
             {% for slot in payload.slots %}
                 <div class="list" id="{{ slot[3] }}">
-                    <div class="img"><img src="/static{{ slot[2] }}" alt="Logo of {{ slot[1] }}"></div>
+                    <div class="img"><img src="/static/res/teams/{{ slot[2] }}" alt="Logo of {{ slot[1] }}"></div>
                     <div>
                         <span>{{ slot[0] }}</span>
                         <span>{{ slot[1] }}</span>
@@ -39,7 +41,7 @@
             </div>
         </details>
 
-        <details id="score">
+        <details id="score" open>
             <summary>Scores <button name="update_scores">Update</button></summary>
             <div>
                 <div class="body">

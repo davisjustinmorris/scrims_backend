@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request, make_response
+from flask import Flask, render_template, session, request, redirect, url_for
 from flask_cors import CORS, cross_origin
 import db_man as db
 
@@ -10,17 +10,40 @@ CORS(app)
 
 @app.before_request
 def check_access():
-    pass
+    enforced_routes = ['def_root', 'ajax_handle']
+    if request.endpoint in enforced_routes:
+        if session.get('token') is not None and session.get('login_id') is not None:
+            if db.Auth.check_token(session['login_id'], session['token']):
+                return
+            else:
+                session['token'] = None
+
+        return redirect(url_for('def_login'))
 
 
-@app.route('/login')
+@app.route('/logout')
+def def_logout():
+    session.pop("token")
+    session.pop("login_id")
+    return redirect(url_for("def_login"))
+
+
+@app.route('/login', methods=['GET', 'POST'])
 def def_login():
-    return ''
+    if request.method == "GET":
+        get_res = db.Auth.do_login(session.get("username"), session.get("password"))
+        if get_res is None or get_res is False:
+            return render_template('login.html')
+        return redirect(url_for('def_root'))
 
-
-@app.route('/team_list')
-def team_list():
-    return render_template('teams.html', payload=db.Manage.get_teams())
+    res = db.Auth.do_login(request.form.get("username"), request.form.get("password"))
+    if res is None:
+        return render_template('login.html', msg="No Such Username")
+    if res is False:
+        return render_template('login.html', msg="Wrong Password")
+    session['token'] = res[0]
+    session['login_id'] = res[1]
+    return redirect(url_for('def_root'))
 
 
 @app.route('/')
@@ -49,7 +72,6 @@ def ajax_handle(task=None):
 @cross_origin()
 def api_get_slots(week=None):
     res = db.get_slots_data(week)
-    print(res)
     return res
 
 
@@ -58,7 +80,6 @@ def api_get_slots(week=None):
 @cross_origin()
 def api_get_scores(week=None):
     res = db.get_scores_data(week)
-    print(res)
     return res
 
 
