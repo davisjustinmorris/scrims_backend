@@ -47,6 +47,9 @@ html body main nav ul li a.selected {
 html body main nav button {
   margin: 0 5px;
 }
+html body main nav .spacer {
+  flex-grow: 1;
+}
 html body main details {
   margin-top: 0.5rem;
 }
