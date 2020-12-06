@@ -155,3 +155,8 @@ class Auth:
     def check_token(user_num, token):
         q_check_token = '''SELECT COUNT(*) FROM tb_login WHERE lg_pk_id = ? AND lg_token = ?'''
         return db.read(q_check_token, (user_num, token), f_all=False)[0] == 1
+
+    @staticmethod
+    def remove_token(token):
+        q_remove_token = '''UPDATE tb_login SET lg_token = NULL WHERE lg_token = ?'''
+        db.write(q_remove_token, (token,))

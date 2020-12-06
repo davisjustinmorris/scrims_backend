@@ -137,6 +137,17 @@ $(document).ready(function () {
             alert("Invalid details!");
             return ;
         }
+        // prevent entry of data with existing slot number
+        if (this.name === "add") {
+            let flag_duplicate = false;
+            $(`#slot .list span:first-child`).each(function (i, span) {
+                if (slot === span.innerHTML) {
+                    alert("Slot already exists");
+                    flag_duplicate = true;
+                }
+            });
+            if (flag_duplicate) return;
+        }
         ajax_push("/ajax/modify_slots", {
             action: this.name,
             data: {
